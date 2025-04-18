@@ -52,7 +52,7 @@ export const CategoryDropdown = ({
         >
           {category.name}
         </Button>
-        {category.subcategories && category.subcategories.length > 0 && (
+        {category.subcategories && category.subcategories.docs?.length && (
           <div
             className={cn(
               "opacity-0 absolute -bottom-3 w-0 h-0 border-l-[10px] border-r-[10px] border-b-[10px] border-l-transparent border-r-transparent border-b-black left-1/2 -translate-x-1/2 ",
