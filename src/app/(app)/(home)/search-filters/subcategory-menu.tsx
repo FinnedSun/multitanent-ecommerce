@@ -1,0 +1,49 @@
+import { Category } from "@/payload-types"
+import Link from "next/link"
+
+interface SubcategoryMenuProps {
+  category: Category // TODO: Change this
+  isOpen: boolean
+  position: {
+    top: number
+    left: number
+  }
+}
+
+export const SubcategoryMenu = ({
+  category,
+  isOpen,
+  position
+}: SubcategoryMenuProps) => {
+  if (!isOpen || !category.subcategories || !category.subcategories.docs?.length) return null
+
+  const backgroundColor = category.color || "#F5F5F5"
+  return (
+    <div
+      className="fixed z-100"
+      style={{
+        top: position.top,
+        left: position.left,
+      }}
+    >
+      {/* Invisible brige to maintain hover */}
+      <div className="h-3 w-60" />
+      <div
+        style={{ backgroundColor }}
+        className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-[2px] -translate-y-[2px]"
+      >
+        <div>
+          {category.subcategories.docs?.map((subcategory) => (
+            <Link
+              key={typeof subcategory === "string" ? subcategory : subcategory.id}
+              href={`/categories/${category.slug}/${typeof subcategory === "string" ? subcategory : subcategory.slug}`}
+              className="w-full text-left p-4 hover:bg-black hover:text-white flex justify-between items-center underline font-medium"
+            >
+              {typeof subcategory === "string" ? subcategory : subcategory.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
