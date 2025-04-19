@@ -1,8 +1,9 @@
 import { Category } from "@/payload-types"
 import Link from "next/link"
+import { CustomCategory } from "../types"
 
 interface SubcategoryMenuProps {
-  category: Category // TODO: Change this
+  category: CustomCategory // TODO: Change this
   isOpen: boolean
   position: {
     top: number
@@ -15,7 +16,7 @@ export const SubcategoryMenu = ({
   isOpen,
   position
 }: SubcategoryMenuProps) => {
-  if (!isOpen || !category.subcategories || !category.subcategories.docs?.length) return null
+  if (!isOpen || !category.subcategories || category.subcategories.length === 0) return null
 
   const backgroundColor = category.color || "#F5F5F5"
   return (
@@ -33,13 +34,13 @@ export const SubcategoryMenu = ({
         className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-[2px] -translate-y-[2px]"
       >
         <div>
-          {category.subcategories.docs?.map((subcategory) => (
+          {category.subcategories.map((subcategory: Category) => (
             <Link
               key={typeof subcategory === "string" ? subcategory : subcategory.id}
-              href={`/categories/${category.slug}/${typeof subcategory === "string" ? subcategory : subcategory.slug}`}
+              href={`/${category.slug}/${subcategory.slug}`}
               className="w-full text-left p-4 hover:bg-black hover:text-white flex justify-between items-center underline font-medium"
             >
-              {typeof subcategory === "string" ? subcategory : subcategory.name}
+              {subcategory.name}
             </Link>
           ))}
         </div>
