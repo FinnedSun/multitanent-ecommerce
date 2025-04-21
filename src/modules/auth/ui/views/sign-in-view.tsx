@@ -20,7 +20,7 @@ import { Poppins } from "next/font/google"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useTRPC } from "@/trpc/client"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 
 
@@ -33,10 +33,12 @@ export const SignInViews = () => {
   const router = useRouter()
 
   const trpc = useTRPC();
+  const queryClient = useQueryClient()
   const login = useMutation(trpc.auth.login.mutationOptions({
-    onSuccess: () => {
-      router.push("/ ")
-      toast.success("Account created successfully")
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.auth.session.queryFilter())
+      router.push("/")
+      toast.success("Logged in successfully")
     },
     onError: (error) => {
       toast.error(error.message)
