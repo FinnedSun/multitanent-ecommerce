@@ -8,7 +8,7 @@ interface ProductCardProps {
   imageUrl?: string | null;
   authorUsername: string;
   authorImageUrl?: string | null;
-  reviewReting: number;
+  reviewRating: number;
   reviewCount: number;
   price: number
 }
@@ -19,7 +19,7 @@ export const ProductCard = ({
   imageUrl,
   authorUsername,
   authorImageUrl,
-  reviewReting,
+  reviewRating,
   reviewCount,
   price,
 }: ProductCardProps) => {
@@ -55,7 +55,7 @@ export const ProductCard = ({
             <div className="flex items-center gap-1">
               <StarIcon className="size-3.5 fill-black" />
               <p className="text-sm font-medium">
-                {reviewReting} ( {reviewCount})
+                {reviewRating} ( {reviewCount})
               </p>
             </div>
           )}
