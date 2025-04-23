@@ -45,7 +45,7 @@ export const CategoriesSidebar = ({
   const handelCategoryClick = (category: CategoriesGetManyOutput[1]) => {
     if (category.subcategories && category.subcategories.length > 0) {
       // TODO: as unknown is needed because of the type mismatch between the two arrays
-      setParentCategories(category.subcategories as unknown as CategoriesGetManyOutput)
+      setParentCategories(category.subcategories as CategoriesGetManyOutput)
       setSelectedCategory(category)
     } else {
       // This is a leaf category, so navigate to the category page
