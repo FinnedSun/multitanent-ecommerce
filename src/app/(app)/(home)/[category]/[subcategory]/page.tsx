@@ -1,6 +1,10 @@
+import { ProductList, ProductListSkeleton } from "@/modules/products/ui/components/products-list";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
+
 interface Props {
   params: Promise<{
-    category: string,
     subcategory: string
   }>
 }
@@ -8,17 +12,18 @@ interface Props {
 export const dynamic = "force-dynamic"
 
 const SubcategoryPage = async ({ params }: Props) => {
-  const { category, subcategory } = await params;
+  const { subcategory } = await params;
+
+  const queryClent = getQueryClient();
+
+  void queryClent.prefetchQuery(trpc.products.getMany.queryOptions({ category: subcategory }))
 
   return (
-    <div>
-      <div>
-        category: {category}
-      </div>
-      <div>
-        subcategory: {subcategory}
-      </div>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClent)}>
+      <Suspense fallback={<ProductListSkeleton />}>
+        <ProductList category={subcategory} />
+      </Suspense>
+    </HydrationBoundary>
   )
 }
 
