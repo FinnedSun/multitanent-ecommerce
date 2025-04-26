@@ -2,14 +2,14 @@ import { useCartStore } from "../store/use-cart-store";
 
 export const useCart = (tenantSlug: string) => {
   const {
-    getCardByTenant,
+    getCartByTenant,
     addProduct,
     removeProduct,
-    clearCard,
-    clearAllCard
+    clearCart,
+    clearAllCart
   } = useCartStore();
 
-  const productIds = getCardByTenant(tenantSlug)
+  const productIds = getCartByTenant(tenantSlug)
 
   const toggleProduct = (productId: string) => {
     if (productIds.includes(productId)) {
@@ -19,22 +19,22 @@ export const useCart = (tenantSlug: string) => {
     }
   }
 
-  const isProductInCard = (productId: string) => {
+  const isProductInCart = (productId: string) => {
     return productIds.includes(productId)
   }
 
-  const clearTenantCard = () => {
-    clearCard(tenantSlug)
+  const clearTenantCart = () => {
+    clearCart(tenantSlug)
   }
 
   return {
     productIds,
     addProduct: (productId: string) => addProduct(tenantSlug, productId),
-    removeProduct: (productId: string) => addProduct(tenantSlug, productId),
-    clearCard: clearTenantCard,
-    clearAllCard,
+    removeProduct: (productId: string) => removeProduct(tenantSlug, productId),
+    clearCart: clearTenantCart,
+    clearAllCart,
     toggleProduct,
-    isProductInCard,
+    isProductInCart,
     totalItems: productIds.length,
   };
 };

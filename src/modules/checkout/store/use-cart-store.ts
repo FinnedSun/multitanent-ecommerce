@@ -2,30 +2,30 @@
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 
-interface TenantCard {
+interface TenantCart {
   productIds: string[];
 }
 
-interface CardState {
-  tenantCards: Record<string, TenantCard>;
+interface CartState {
+  tenantCarts: Record<string, TenantCart>;
   addProduct: (tenantSlug: string, productId: string) => void;
   removeProduct: (tenantSlug: string, productId: string) => void;
-  clearCard: (tenantSlug: string) => void;
-  clearAllCard: () => void;
-  getCardByTenant: (tenantSlug: string) => string[];
+  clearCart: (tenantSlug: string) => void;
+  clearAllCart: () => void;
+  getCartByTenant: (tenantSlug: string) => string[];
 }
 
-export const useCartStore = create<CardState>()(
+export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
-      tenantCards: {},
+      tenantCarts: {},
       addProduct: (tenantSlug, productId) =>
         set((state) => ({
-          tenantCards: {
-            ...state.tenantCards,
+          tenantCarts: {
+            ...state.tenantCarts,
             [tenantSlug]: {
               productIds: [
-                ...(state.tenantCards[tenantSlug]?.productIds || []),
+                ...(state.tenantCarts[tenantSlug]?.productIds || []),
                 productId,
               ]
             }
@@ -33,34 +33,34 @@ export const useCartStore = create<CardState>()(
         })),
       removeProduct: (tenantSlug, productId) =>
         set((state) => ({
-          tenantCards: {
-            ...state.tenantCards,
+          tenantCarts: {
+            ...state.tenantCarts,
             [tenantSlug]: {
-              productIds: state.tenantCards[tenantSlug]?.productIds.filter(
+              productIds: state.tenantCarts[tenantSlug]?.productIds.filter(
                 (id) => id !== productId
               ) || [],
             }
           }
         })),
-      clearCard: (tenantSlug) =>
+      clearCart: (tenantSlug) =>
         set((state) => ({
-          tenantCards: {
-            ...state.tenantCards,
+          tenantCarts: {
+            ...state.tenantCarts,
             [tenantSlug]: {
               productIds: []
             },
           },
         })),
-      clearAllCard: () =>
+      clearAllCart: () =>
         set({
-          tenantCards: {},
+          tenantCarts: {},
         }),
-      getCardByTenant: (tenantSlug) =>
-        get().tenantCards[tenantSlug]?.productIds || [],
+      getCartByTenant: (tenantSlug) =>
+        get().tenantCarts[tenantSlug]?.productIds || [],
 
     }),
     {
-      name: "funroad-card",
+      name: "funroad-cart",
       storage: createJSONStorage(() => localStorage),
     },
   ),
