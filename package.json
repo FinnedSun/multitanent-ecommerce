@@ -1,5 +1,5 @@
 {
-  "name": "multitanent-ecommerce",
+  "name": "multitenant-ecommerce",
   "version": "0.1.0",
   "private": true,
   "scripts": {
