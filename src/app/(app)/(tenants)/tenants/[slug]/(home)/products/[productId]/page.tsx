@@ -9,7 +9,6 @@ interface ProductIdProps {
   }>
 }
 
-export const dynamic = "force-dynamic";
 
 const ProductId = async ({
   params
