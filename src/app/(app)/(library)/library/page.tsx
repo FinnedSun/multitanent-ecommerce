@@ -6,16 +6,16 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 export const dynamic = "force-dynamic"
 
 const LibraryPage = async () => {
-  const queryClent = getQueryClient();
+  const queryClient = getQueryClient();
 
-  void queryClent.prefetchInfiniteQuery(trpc.library.getMany.infiniteQueryOptions(
+  void queryClient.prefetchInfiniteQuery(trpc.library.getMany.infiniteQueryOptions(
     {
       limit: DEFAULT_LIMIT,
     }
   ))
 
   return (
-    <HydrationBoundary state={dehydrate(queryClent)}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <LibraryView />
     </HydrationBoundary>
   )

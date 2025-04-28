@@ -21,9 +21,9 @@ const TenantSlugPage = async ({
   const { slug } = await params;
   const filters = await loadProductFilters(searchParams);
 
-  const queryClent = getQueryClient();
+  const queryClient = getQueryClient();
 
-  void queryClent.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
+  void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
     {
       ...filters,
       tenantSlug: slug,
@@ -31,7 +31,7 @@ const TenantSlugPage = async ({
     }
   ))
   return (
-    <HydrationBoundary state={dehydrate(queryClent)}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <ProductListView tenantSlug={slug} narrowView />
     </HydrationBoundary>
   )

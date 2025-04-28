@@ -15,12 +15,12 @@ const ProductId = async ({
 }: ProductIdProps) => {
   const { productId, slug } = await params;
 
-  const queryClent = getQueryClient();
-  void queryClent.prefetchQuery(trpc.tenants.getOne.queryOptions({
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({
     slug
   }))
   return (
-    <HydrationBoundary state={dehydrate(queryClent)}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <ProductView productId={productId} tenantSlug={slug} />
     </HydrationBoundary>
   )

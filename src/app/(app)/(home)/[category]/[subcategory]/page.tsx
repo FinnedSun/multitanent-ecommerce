@@ -20,16 +20,16 @@ const SubcategoryPage = async ({ params, searchParams }: Props) => {
 
   console.log(JSON.stringify(filters), "THIS IS FROM RSC")
 
-  const queryClent = getQueryClient();
+  const queryClient = getQueryClient();
 
-  void queryClent.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({
+  void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({
     ...filters,
     category: subcategory,
     limit: DEFAULT_LIMIT
   }))
 
   return (
-    <HydrationBoundary state={dehydrate(queryClent)}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <ProductListView category={subcategory} />
     </HydrationBoundary>
   )
