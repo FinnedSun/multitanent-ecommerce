@@ -16,14 +16,14 @@ const TenantSlugLayout = async ({
 }: TenantSlugLayoutProps) => {
   const { slug } = await params;
 
-  const queryClent = getQueryClient();
+  const queryClient = getQueryClient();
 
-  void queryClent.prefetchQuery(trpc.tenants.getOne.queryOptions({
+  void queryClient.prefetchQuery(trpc.tenants.getOne.queryOptions({
     slug,
   }))
   return (
     <div className="min-h-screen bg-[#F4F4F0] flex flex-col">
-      <HydrationBoundary state={dehydrate(queryClent)}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<NavbarSkeleton />}>
           <Navbar slug={slug} />
         </Suspense>

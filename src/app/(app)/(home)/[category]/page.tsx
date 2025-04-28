@@ -20,9 +20,9 @@ const CategoryPage = async ({ params, searchParams }: Props) => {
   const filters = await loadProductFilters(searchParams);
 
 
-  const queryClent = getQueryClient();
+  const queryClient = getQueryClient();
 
-  void queryClent.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
+  void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
     {
       ...filters,
       category,
@@ -31,7 +31,7 @@ const CategoryPage = async ({ params, searchParams }: Props) => {
   ))
 
   return (
-    <HydrationBoundary state={dehydrate(queryClent)}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <ProductListView category={category} />
     </HydrationBoundary>
   )
