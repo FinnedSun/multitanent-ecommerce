@@ -123,7 +123,7 @@ export const ProductView = ({
                     onClick={() => {
                       setIsCopied(true);
                       navigator.clipboard.writeText(
-                        `${window.location.href}}`
+                        `${window.location.href}`
                       );
                       toast.success("Copied to clipboard");
                       setTimeout(() => {
@@ -163,11 +163,11 @@ export const ProductView = ({
                       </div>
 
                       <Progress
-                        value={data.ratingDistirbution[stars]}
+                        value={data.ratingDistribution[stars]}
                         className="h-[1lh]"
                       />
                       <div className="font-medium">
-                        {data.ratingDistirbution[stars]}%
+                        {data.ratingDistribution[stars]}%
                       </div>
                     </Fragment>
                   ))}

@@ -65,7 +65,7 @@ export const productsRouter = createTRPCRouter({
           ? reviews.docs.reduce((acc, review) => acc + review.rating, 0) / reviews.docs.length
           : 0;
 
-      const ratingDistirbution: Record<number, number> = {
+      const ratingDistribution: Record<number, number> = {
         5: 0,
         4: 0,
         3: 0,
@@ -78,14 +78,14 @@ export const productsRouter = createTRPCRouter({
           const rating = review.rating;
 
           if (rating >= 1 && rating <= 5) {
-            ratingDistirbution[rating] = (ratingDistirbution[rating] || 0) + 1;
+            ratingDistribution[rating] = (ratingDistribution[rating] || 0) + 1;
           }
         })
 
-        Object.keys(ratingDistirbution).forEach((key) => {
+        Object.keys(ratingDistribution).forEach((key) => {
           const rating = Number(key);
-          const count = ratingDistirbution[rating] || 0;
-          ratingDistirbution[rating] = Math.round((count / reviews.totalDocs) * 100);
+          const count = ratingDistribution[rating] || 0;
+          ratingDistribution[rating] = Math.round((count / reviews.totalDocs) * 100);
         })
       }
 
@@ -96,7 +96,7 @@ export const productsRouter = createTRPCRouter({
         tenant: product.tenant as Tenant & { image: Media | null },
         reviewRating,
         reviewCount: reviews.totalDocs,
-        ratingDistirbution,
+        ratingDistribution,
       }
     }),
   getMany: baseProcedure
