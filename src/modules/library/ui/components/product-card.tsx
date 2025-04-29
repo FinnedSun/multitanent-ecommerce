@@ -1,5 +1,4 @@
 
-// TODO: Add real ratings
 
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
