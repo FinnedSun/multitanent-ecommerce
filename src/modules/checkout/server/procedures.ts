@@ -72,7 +72,7 @@ export const checkoutRouter = createTRPCRouter({
             product_data: {
               name: product.name,
               metadata: {
-                stripeAccountId: tenant.stipeAccountId,
+                stripeAccountId: tenant.stripeAccountId,
                 id: product.id,
                 name: product.name,
                 price: product.price,
