@@ -8,7 +8,6 @@ import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init
 
 import { CheckoutMetadata, productMetadata } from '../types';
 import { stripe } from "@/lib/stripe";
-import { verify } from "crypto";
 import { PLATFROM_FEE_PERCENTAGE } from "@/constants";
 
 export const checkoutRouter = createTRPCRouter({
