@@ -8,7 +8,7 @@ import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init
 
 import { CheckoutMetadata, productMetadata } from '../types';
 import { stripe } from "@/lib/stripe";
-import { PLATFROM_FEE_PERCENTAGE } from "@/constants";
+import { PLATFORM_FEE_PERCENTAGE } from "@/constants";
 
 export const checkoutRouter = createTRPCRouter({
   verify: protectedProcedure
@@ -114,7 +114,7 @@ export const checkoutRouter = createTRPCRouter({
       );
 
       const platformFeeAmount = Math.round(
-        totalAmount * (PLATFROM_FEE_PERCENTAGE / 100)
+        totalAmount * (PLATFORM_FEE_PERCENTAGE / 100)
       );
 
       const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
