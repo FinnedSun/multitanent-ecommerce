@@ -80,6 +80,9 @@ export async function POST(req: Request) {
           const lineItems = expendedSession.line_items.data as ExpendedLineItems[];
 
           for (const item of lineItems) {
+            if (!item.price.product.metadata?.id) {
+              throw new Error(`Produk ${item.price.product.name} tidak memiliki metadata ID`)
+            }
             await payload.create({
               collection: "orders",
               data: {
@@ -114,7 +117,7 @@ export async function POST(req: Request) {
     } catch (error) {
       console.log(error)
       return NextResponse.json(
-        { error: "Webhook handler failed" },
+        { error: `Webhook handler failed: ${error instanceof Error ? error.message : "Unknown error"}` },  // Pesan error lebih spesifik
         { status: 400 }
       )
     }
