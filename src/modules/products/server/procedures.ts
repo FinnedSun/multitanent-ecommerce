@@ -1,5 +1,5 @@
 
-import z from "zod";
+import z, { nullable } from "zod";
 import { Category, Media, Tenant } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
@@ -113,6 +113,7 @@ export const productsRouter = createTRPCRouter({
   getMany: baseProcedure
     .input(
       z.object({
+        search: z.string().nullable().optional(),
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_LIMIT),
         category: z.string().nullable().optional(),
@@ -162,7 +163,7 @@ export const productsRouter = createTRPCRouter({
         where["tenant.slug"] = {
           equals: input.tenantSlug,
         };
-      }else {
+      } else {
         where["isPrivate"] = {
           not_equals: true,
         }
@@ -208,6 +209,12 @@ export const productsRouter = createTRPCRouter({
           in: input.tags
         }
       }
+
+      if (input.search) {
+        where["name"] = {
+          like: input.search,
+        };
+      };
 
       const data = await ctx.db.find({
         collection: 'products',
