@@ -1,5 +1,6 @@
 import { isSuperAdmin } from "@/lib/access";
 import { Tenant } from "@/payload-types";
+import { lexicalEditor, UploadFeature } from "@payloadcms/richtext-lexical";
 import { CollectionConfig } from "payload";
 
 export const Products: CollectionConfig = {
