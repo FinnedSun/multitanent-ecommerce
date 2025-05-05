@@ -1,5 +1,5 @@
 
-import z, { nullable } from "zod";
+import z from "zod";
 import { Category, Media, Tenant } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Sort, Where } from "payload";
