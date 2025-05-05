@@ -48,69 +48,48 @@ export async function POST(req: Request) {
           data = event.data.object as Stripe.Checkout.Session;
 
           if (!data.metadata?.userId) {
-            console.error('❌ Metadata userId tidak ditemukan');
-            throw new Error("user ID is required");
-          }
-
-          // Tambahkan validasi status pembayaran
-          if (data.payment_status !== 'paid') {
-            console.error('❌ Pembayaran belum berhasil');
-            throw new Error("Pembayaran belum berhasil");
+            throw new Error("user ID is required")
           }
 
           const user = await payload.findByID({
             collection: "users",
             id: data.metadata.userId,
-          });
+          })
 
           if (!user) {
-            console.error(`❌ User tidak ditemukan: ${data.metadata.userId}`);
-            throw new Error("user not found");
+            throw new Error("user not found")
           }
 
-          try {
-            const expendedSession = await stripe.checkout.sessions.retrieve(
-              data.id,
-              {
-                expand: ["line_items.data.price.product"],
-              },
-              {
-                stripeAccount: event.account,
-              }
-            );
-
-            if (
-              !expendedSession.line_items?.data ||
-              !expendedSession.line_items.data.length
-            ) {
-              console.error('❌ Produk tidak ditemukan di line items');
-              throw new Error("line items not found");
+          const expendedSession = await stripe.checkout.sessions.retrieve(
+            data.id,
+            {
+              expand: ["line_items.data.price.product"],
+            },
+            {
+              stripeAccount: event.account,
             }
+          )
 
-            const lineItems = expendedSession.line_items.data as ExpendedLineItems[];
-
-            for (const item of lineItems) {
-              // Validasi product metadata
-              if (!item.price?.product?.metadata?.id) {
-                console.error('❌ Metadata produk tidak valid');
-                continue;
-              }
-
-              await payload.create({
-                collection: "orders",
-                data: {
-                  stripeCheckoutSessionId: data.id,
-                  stripeAccountId: event.account,
-                  user: user.id,
-                  product: item.price.product.metadata.id,
-                  name: item.price.product.name,
-                }
-              });
-            }
+          if (
+            !expendedSession.line_items?.data ||
+            !expendedSession.line_items.data.length
+          ) {
+            throw new Error("line items not found")
           }
-          catch (error) {
-            console.error('❌ Error processing checkout session:', error);
-            throw error;
+
+          const lineItems = expendedSession.line_items.data as ExpendedLineItems[];
+
+          for (const item of lineItems) {
+            await payload.create({
+              collection: "orders",
+              data: {
+                stripeCheckoutSessionId: data.id,
+                stripeAccountId: event.account,
+                user: user.id,
+                product: item.price.product.metadata.id,
+                name: item.price.product.name,
+              }
+            })
           }
           break;
 
